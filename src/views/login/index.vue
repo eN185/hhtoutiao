@@ -64,7 +64,7 @@ export default {
         // console.log(token)
         this.$store.commit('STE_TOKE', token)
         // 跳转到profile网页
-        this.$router.push('/profile')
+        this.$router.push('/ ')
         this.$toast.success('登录成功')
       } catch (error) {
         const status = error.response.status

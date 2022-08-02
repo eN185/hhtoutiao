@@ -5,3 +5,7 @@
 // import {login, getCodeAPI } from './user.js'
 // export {login, getCodeAPI}
 export * from './user'
+
+export * from './channel'
+
+export * from './news'

@@ -11,7 +11,7 @@
           class="My_m_login"
         >
         </van-image>
-        <span style="color: #fff">1111</span>
+        <span style="color: #fff" class="My_m_spana">111111111111</span>
         <van-tag
           type="primary"
           round
@@ -20,6 +20,7 @@
           class="My_m_span"
           >编辑资料</van-tag
         >
+
       </div>
       <div class="logout" v-else>登陆前</div>
     </header>
@@ -130,16 +131,26 @@ export default {
   background-color: #fff;
 }
 .login {
+  position: relative;
   text-align: center;
-  padding: 20% -30%;
+  // padding: 20% -30%;
   width: 100%;
   height: 400px;
   background: url('@/assets/images/banner.png');
   .My_m_span {
-    margin: 0%;
+    position: absolute;
+    top: 40%;
+    left: 80%;
   }
   .My_m_login {
-    margin: 5% 10%;
+    position: absolute;
+    top: 20%;
+    left: 10%;
+  }
+  .My_m_spana {
+    position: absolute;
+    top: 36%;
+    left: 30%;
   }
 }
 </style>

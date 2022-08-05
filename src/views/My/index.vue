@@ -1,6 +1,7 @@
 <template>
   <div class="My_man">
     <!-- 顶部 -->
+    <!-- 登录后 -->
     <header class="My_header_flex">
       <div class="login" v-if="isLogin">
         <van-image
@@ -11,7 +12,7 @@
           class="My_m_login"
         >
         </van-image>
-        <span style="color: #fff" class="My_m_spana">111111111111</span>
+        <span class="My_m_spana">12211111111111</span>
         <van-tag
           type="primary"
           round
@@ -20,9 +21,37 @@
           class="My_m_span"
           >编辑资料</van-tag
         >
-
+        <div class="My_m_spanb">
+          <div class="My_m_spanc">
+            <span>0</span>
+            <span>头条</span>
+          </div>
+          <div class="My_m_spanc">
+            <span>0</span>
+            <span>粉丝</span>
+          </div>
+          <div class="My_m_spanc">
+            <span>0</span>
+            <span>关注</span>
+          </div>
+          <div class="My_m_spanc">
+            <span>0</span>
+            <span>点赞</span>
+          </div>
+        </div>
       </div>
-      <div class="logout" v-else>登陆前</div>
+      <!-- 未登录 -->
+      <div class="login" v-else>
+        <van-image
+          round
+          width="1.76rem"
+          height="1.76rem"
+          src="@/assets/images/mobile.png"
+          class="My_m_logina"
+        >
+        </van-image>
+        <span class="My_m_spanaa" @click="click_login">登录/注册</span>
+      </div>
     </header>
     <!-- 中间 -->
     <main>
@@ -60,7 +89,8 @@
 export default {
   props: [''],
   data() {
-    return {}
+    return {
+    }
   },
 
   components: {},
@@ -74,12 +104,18 @@ export default {
 
   created() {},
 
-  mounted() {},
-
+  mounted() {
+    // this.$dialog.alert({
+    //   message: '弹窗内容'
+    // })
+  },
   methods: {
     logout() {
       // 清除 token 退出
       this.$store.commit('STE_TOKE', {})
+    },
+    click_login() {
+      this.$router.push('/login')
     }
   }
 }
@@ -147,10 +183,39 @@ export default {
     top: 20%;
     left: 10%;
   }
+  .My_m_logina {
+    position: absolute;
+    top: 20%;
+    left: 42%;
+  }
   .My_m_spana {
     position: absolute;
     top: 36%;
     left: 30%;
+    color: #fff;
+  }
+  .My_m_spanaa {
+    position: absolute;
+    top: 60%;
+    left: 38%;
+    color: #fff;
+  }
+  .My_m_spanb {
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    position: absolute;
+    left: 1;
+    bottom: 0;
+    padding-bottom: 15px;
+    .My_m_spanc {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-evenly;
+      font-size: 30px;
+      color: #fff;
+    }
   }
 }
 </style>

@@ -63,7 +63,6 @@ export default {
         const { data: { data: token } } = await login(this.mobile, this.code)
         // console.log(token)
         this.$store.commit('STE_TOKE', token)
-        // 跳转到profile网页
         this.$router.push('/ ')
         this.$toast.success('登录成功')
       } catch (error) {

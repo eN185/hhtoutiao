@@ -11,36 +11,88 @@
       <van-tab v-for="item in myChannels" :key="item.id" :title="item.name">
         <ArticleList :id="item.id"></ArticleList>
       </van-tab>
-      <span class="toutiao toutiao-gengduo1"></span>
+      <span class="toutiao toutiao-gengduo1" @click="Home_show"></span>
     </van-tabs>
+    <!-- 频道弹层 -->
+    <van-popup
+      v-model="show"
+      position="top"
+      closeable
+      close-icon-position="top-left"
+      :style="{ height: '100%', width: '100%' }"
+      ><ChannelPopup
+        :myChannels="myChannels"
+        @close="show = false"
+        @change-active="active = $event"
+        @del-channel="delChannel"
+        @add-channel="addChannel"
+      />
+      <!-- $event 模板
+      - 原生事件：事件对象
+      - 自定义事件当中：子组件传递过来的第一个参数 -->
+    </van-popup>
   </div>
 </template>
 
 <script>
-import { getMyChannel as getMyChannelAPI } from '@/api'
+import {
+  getMyChannel as getMyChannelAPI,
+  delChannel,
+  addChannel,
+  setMyChannelsToLocal,
+  getMyChannelsByLocal
+} from '@/api'
 import ArticleList from './components/ArticleList.vue'
+import ChannelPopup from './components/ChannelPopup.vue'
 export default {
   props: [''],
   data() {
     return {
       active: 0,
-      myChannels: []
+      myChannels: [],
+      show: false
     }
   },
 
   components: {
-    ArticleList
+    ArticleList,
+    ChannelPopup
   },
 
-  computed: {},
+  computed: {
+    // 用于表示是否登录
+    isLogin() {
+      return !!this.$store.state.tokenObj.token
+    }
+  },
 
   created() {
-    this.getMyChannel()
+    this.initMyChannel()
   },
 
   mounted() {},
 
   methods: {
+    // 初始化myChannels数据
+    initMyChannel() {
+      if (this.isLogin) {
+        // 用户登录了
+        // -发起请求获取myChannels数据
+        this.getMyChannel()
+      } else {
+        // 用户未登录
+        const myChannels = getMyChannelsByLocal()
+        if (myChannels) {
+          // -本地存储有myChannels数据，从本地拿myChannels
+          this.myChannels = myChannels
+        } else {
+          // -本地存储没有myChannels数据，获取默认的myChannels
+          this.getMyChannel()
+        }
+      }
+    },
+    // 如果用户登录了，获取的是用户自己的myChannels
+    // 没有登录，获取的是默认的myChannels
     async getMyChannel() {
       try {
         const { data } = await getMyChannelAPI()
@@ -49,6 +101,49 @@ export default {
       } catch (e) {
         console.log(e)
         this.$$toast.fail('获取失败，请刷新')
+      }
+    },
+    Home_show() {
+      this.show = true
+    },
+    //  删除频道
+    async delChannel(id) {
+      // 删除我的频道
+      this.$toast.loading({
+        message: '正在删除频道~~',
+        forbidClick: true
+      })
+      try {
+        const newChannels = this.myChannels.filter((item) => item.id !== id)
+        if (this.isLogin) {
+          // - 删除服务器的数据
+          await delChannel(id)
+        } else {
+          setMyChannelsToLocal(newChannels)
+        }
+        // -删除页面上的数据
+        this.myChannels = newChannels
+        this.$toast.success('删除频道成功~')
+      } catch (error) {
+        this.$toast.fail('删除频道失败~')
+      }
+    },
+    // 添加频道
+    async addChannel(channel) {
+      this.$toast.loading({
+        message: '正在添加频道~~',
+        forbidClick: true
+      })
+      try {
+        if (this.isLogin) {
+          await addChannel(channel.id, this.myChannels.length)
+        } else {
+          setMyChannelsToLocal([...this.myChannels, channel])
+        }
+        this.myChannels.push(channel)
+        this.$toast.success('添加频道成功~')
+      } catch (error) {
+        this.$toast.fail('添加频道失败~')
       }
     }
   }
@@ -137,7 +232,7 @@ export default {
   }
 }
 :deep(.van-tabs__content) {
-    // 符号的两侧必须由空格
+  // 符号的两侧必须由空格
   max-height: calc(100vh - 92px - 88px - 100px);
   padding-bottom: 100px;
   overflow: auto;

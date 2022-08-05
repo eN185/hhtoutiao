@@ -63,7 +63,7 @@ export default {
     async getFirstPageArticle() {
       try {
         const { data } = await getArticleAPI(this.id, +new DataTransfer())
-        console.log(data)
+        // console.log(data)
         this.articles = data.data.results
         // 保存下一页时间戳
         this.pre_timestamp = data.data.pre_timestamp

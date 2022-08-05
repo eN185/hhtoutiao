@@ -39,6 +39,7 @@ export const addChannel = (id, seq) => {
   return request({
     url: '/v1_0/user/channels',
     method: 'PATCH',
+    // 请求参数  Body 用 data
     data: {
       channels: [{ id, seq }]
     }

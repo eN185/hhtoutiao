@@ -197,6 +197,9 @@ export default {
   font-size: 40px;
   color: #fff;
 }
+:deep(.van-nav-bar__text) {
+  color: #fff;
+}
 .avator-popup {
   background-color: rgba(30, 30, 30, 0.2);
 }

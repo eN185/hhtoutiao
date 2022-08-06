@@ -11,8 +11,9 @@
         class="search"
         @search="onSearch"
         @focus="onSearchFocus"
-        @cancel="cancelFn"
+        @cancel="$router.back()"
       />
+        <!-- @cancel="$router.go(-1)" -->
     </form>
     <!-- 搜索历史/建议/结果 -->
     <component :is="componentName" :keywords="keywords"></component>
@@ -70,9 +71,6 @@ export default {
       // 如果 keywords为 '' 显示搜索历史
       // 如果 keywords有值， 显示搜索建议
       this.isShowSearchResults = false
-    },
-    cancelFn() {
-      this.$router.go(-1)
     }
   }
 }

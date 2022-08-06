@@ -19,6 +19,7 @@
           color="#fff"
           text-color="#000"
           class="My_m_span"
+          @click="$router.push('/user')"
           >编辑资料</van-tag
         >
         <div class="My_m_spanb">
@@ -89,8 +90,7 @@
 export default {
   props: [''],
   data() {
-    return {
-    }
+    return {}
   },
 
   components: {},

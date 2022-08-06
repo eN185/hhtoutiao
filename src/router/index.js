@@ -41,6 +41,13 @@ const routes = [
   {
     path: '/search',
     component: () => import('@/views/Search')
+  },
+  {
+    path: '/user',
+    component: () => import('@/views/User'),
+    meta: {
+      title: '个人信息'
+    }
   }
 ]
 
